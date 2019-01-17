@@ -6,10 +6,10 @@
 
 ## Steps to start the service
 1. Clone this repo : 
-```git clone https://github.com/acp297/LeadIQ.git```
+```https://github.com/acp297/imgur_image_upload_service.git```
 
 2. Navigate to the repository
-```cd LeadIQ```
+```cd imgur_image_upload_service```
 
 3. Start the service.
 ```sh run.sh```
