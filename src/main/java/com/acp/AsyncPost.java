@@ -35,6 +35,7 @@ public class AsyncPost extends Thread {
     @Override
     public void run() {
 
+        boolean areAllUrlDuplicate = true;
         String[] imageUrls = postRequestInputBody.getUrls();
         UploadStatus uploadStatus = new UploadStatus();
         List<String> uploadedImages = new ArrayList<>();
@@ -43,6 +44,19 @@ public class AsyncPost extends Thread {
         uploadStatus.setPending(pendingImages);
 
         for (String imageUrl : imageUrls){
+
+            if(allJobs.getImageUrls().contains(imageUrl)){
+                logger.info("Duplicate url found: " + imageUrl);
+                pendingImages.remove(imageUrl);
+                uploadStatus.setPending(pendingImages);
+
+                failedImages.add(imageUrl);
+                uploadStatus.setFailed(failedImages);
+                continue;
+            } else {
+                allJobs.setImageUrls(imageUrl);
+                areAllUrlDuplicate = false;
+            }
             Thread thread = new Thread(){
                 @Override
                 public synchronized void run() {
@@ -79,6 +93,12 @@ public class AsyncPost extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        if (areAllUrlDuplicate){
+            logger.info("All url are duplicate");
+            uploadStatus.setComplete(uploadedImages);
+            job.setUploaded(uploadStatus);
+            job.setFinished(getCurrentTime());
         }
         job.setStatus(Status.complete);
         allJobs.setJobList(job);
