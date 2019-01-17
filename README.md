@@ -6,7 +6,7 @@
 
 ## Steps to start the service
 1. Clone this repo : 
-```https://github.com/acp297/imgur_image_upload_service.git```
+```git clone https://acp297@bitbucket.org/acp297/imgur_image_upload_service.git```
 
 2. Navigate to the repository
 ```cd imgur_image_upload_service```
